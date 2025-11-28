@@ -1,9 +1,9 @@
 <template>
-  <div class="ticket-list">
+  <div class="ticket-grid">
     <TicketCard
-      v-for="ticket in tickets"
-      :key="ticket.id"
-      :ticket="ticket"
+      v-for="t in tickets"
+      :key="t.id"
+      :ticket="t"
       @toggleFavourite="$emit('toggleFavourite', $event)"
     />
   </div>
@@ -15,23 +15,24 @@ import TicketCard from './TicketCard.vue'
 defineProps({
   tickets: Array
 })
-defineEmits(['toggleFavourite'])
+// defineEmits not necessary here; parent will catch the forwarded event
 </script>
 
 <style scoped>
-.ticket-list {
+.ticket-grid {
   display: grid;
-  gap: 20px;
+  gap: 24px;
+  grid-template-columns: 1fr;
 }
 
 @media (min-width: 768px) {
-  .ticket-list {
+  .ticket-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (min-width: 1024px) {
-  .ticket-list {
+@media (min-width: 1100px) {
+  .ticket-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }

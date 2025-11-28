@@ -3,10 +3,14 @@ import { ref, computed } from 'vue'
 import HeaderSection from './components/HeaderSection.vue'
 import TicketList from './components/TicketList.vue'
 
+// Light/Dark Mode Toggle
 const darkMode = ref(false)
-const sortKey = ref('price')
-const filterFeatured = ref('all')
 
+// Sorting & Filtering
+const sortMode = ref('none')
+const filterMode = ref('all')
+
+// Ticket Data
 const tickets = ref([
   {
     id: 1,
@@ -45,59 +49,68 @@ const tickets = ref([
     favourited: false,
     img: "https://i.postimg.cc/ZRF5vQVV/images-q-tbn-ANd9Gc-S-i-KJGrl-Qm-AWn-P9Y7VZIe-Sn-TYMVa5MOb-EA-s.jpg",
     benefits: [
-      "VIP lounge",
-      "Front-row seating",
-      "Merch bundle",
-      "Exclusive meet-and-greet"
+      "Access to VIP lounge",
+      "Exclusive merchandise",
+      "Front-row seating"
     ]
   }
 ])
 
-const filteredTickets = computed(() => {
+// Favourite Toggle
+function toggleFavourite(id) {
+  const t = tickets.value.find(t => t.id === id)
+  if (t) t.favourited = !t.favourited
+}
+
+// Filtering + Sorting Logic
+const processedTickets = computed(() => {
   let list = [...tickets.value]
-  if (filterFeatured.value === 'featured') {
+
+  // FILTER
+  if (filterMode.value === 'featured') {
     list = list.filter(t => t.featured)
   }
-  return list.sort((a,b) => sortKey.value === 'price' ? a.price - b.price : a.name.localeCompare(b.name))
-})
 
-function toggleFavourite(id) {
-  const t = tickets.value.find(x => x.id === id)
-  t.favourited = !t.favourited
-}
+  // SORT
+  if (sortMode.value === 'low') {
+    list.sort((a, b) => a.price - b.price)
+  } else if (sortMode.value === 'high') {
+    list.sort((a, b) => b.price - a.price)
+  }
+
+  return list
+})
 </script>
 
 <template>
-  <div :class="['page', { dark: darkMode }]">
-    <HeaderSection
-      title="Cape Town Food Festival 2025"
-      subtitle="Choose your ticket tier and enjoy the experience!"
-    />
+  <div class="page" :class="{ dark: darkMode }">
+    <HeaderSection />
 
-    <!-- Controls -->
+    <!-- Controls Section -->
     <div class="controls">
-      <label>
-        Sort by:
-        <select v-model="sortKey">
-          <option value="price">Price</option>
-          <option value="name">Name</option>
-        </select>
-      </label>
+      <!-- Sort -->
+      <select v-model="sortMode">
+        <option value="none">Sort: None</option>
+        <option value="low">Price: Low → High</option>
+        <option value="high">Price: High → Low</option>
+      </select>
 
-      <label>
-        Filter:
-        <select v-model="filterFeatured">
-          <option value="all">All</option>
-          <option value="featured">Featured Only</option>
-        </select>
-      </label>
+      <!-- Filter -->
+      <select v-model="filterMode">
+        <option value="all">Show: All</option>
+        <option value="featured">Show: Featured</option>
+      </select>
 
+      <!-- Dark/Light Mode Toggle -->
       <button @click="darkMode = !darkMode">
-        {{ darkMode ? '☀️ Light Mode' : '🌙 Dark Mode' }}
+        {{ darkMode ? '☀ Light Mode' : '🌙 Dark Mode' }}
       </button>
     </div>
 
-    <TicketList :tickets="filteredTickets" @toggleFavourite="toggleFavourite"/>
+    <TicketList
+      :tickets="processedTickets"
+      @toggleFavourite="toggleFavourite"
+    />
   </div>
 </template>
 
@@ -111,23 +124,27 @@ function toggleFavourite(id) {
   transition: background 0.5s, color 0.5s;
 }
 
+/* DARK MODE */
 .page.dark {
-  background: #1c1c1c;
+  background: #121212;
   color: #e0e0e0;
 }
 
 .controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 12px;
   align-items: center;
+  justify-content: center;
   margin: 20px 0;
 }
 
-.controls select, .controls button {
+.controls select,
+.controls button {
   padding: 8px 12px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
+  font-weight: bold;
 }
 </style>

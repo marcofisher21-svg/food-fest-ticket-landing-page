@@ -1,6 +1,5 @@
 <template>
   <div class="ticket-card" :class="{ featured: ticket.featured }">
-
     <!-- Image -->
     <div class="img-wrapper">
       <img :src="ticket.img" :alt="ticket.name" />
@@ -31,25 +30,40 @@
 
     <!-- Favourite Button -->
     <button
-      @click="$emit('toggleFavourite', ticket.id)"
+      @click="onToggleFav"
       :class="['fav-btn', ticket.favourited ? 'active' : '']"
     >
       {{ ticket.favourited ? '❤️ Favourited' : '♡ Favourite' }}
     </button>
 
     <!-- Book Button -->
-    <button class="book-btn">
+    <button class="book-btn" @click="bookTicket">
       📘 Book Now
     </button>
-
   </div>
 </template>
 
 <script setup>
+const props = defineProps({
+  ticket: Object
+})
 
-// USD → ZAR conversion (fixed rate)
+const emit = defineEmits(['toggleFavourite'])
+
+// emit id to parent when favourite clicked
+function onToggleFav() {
+  emit('toggleFavourite', props.ticket.id)
+}
+
+// USD → ZAR conversion
 function toRand(usd) {
   return (usd * 18.5).toFixed(2)
+}
+
+function bookTicket() {
+  const confirmed = confirm(`Do you want to book: ${props.ticket.name}?`)
+  if (confirmed) alert(`Successfully booked: ${props.ticket.name} 🎉`)
+  else alert('Booking cancelled ❌')
 }
 </script>
 
@@ -61,6 +75,7 @@ function toRand(usd) {
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   transition: 0.2s;
   overflow: hidden;
+  color: #222;
 }
 
 .ticket-card:hover {
@@ -98,7 +113,7 @@ img {
 }
 
 .benefits {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .price {
@@ -139,3 +154,4 @@ img {
   cursor: pointer;
 }
 </style>
+
