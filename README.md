@@ -1,38 +1,42 @@
-# food-festival
+# 🎟️ Event Ticket Landing Page (Vue 3)
 
-This template should help get you started developing with Vue 3 in Vite.
+A responsive, interactive landing page built with **Vue 3 + Vite** that displays multiple event ticket tiers using reusable card components. Each ticket includes images, descriptions, benefits, and booking functionality.
 
-## Recommended IDE Setup
+---
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## 📌 Features
 
-## Recommended Browser Setup
+### 🎫 Ticket Cards
+- Reusable Vue components  
+- low-quality images  
+- Price, description, and a dropdown list of benefits  
+- “Featured” tier with special styling  
+- Favourite/like button with animation  
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+### 🎛 Extra Features
+- Sort or filter by price or tier type  
+- Book button + Buy Now button  
+- Hover animations  
+- Optional dark/light mode  
+- Fully responsive layout  
 
-## Customize configuration
+---
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## 🛠️ Installation & Setup
 
-## Project Setup
+### **1. Clone the repository**
+in gitbash
 
-```sh
+git clone https://github.com/marcofisher21-svg/food-fest-ticket-landing-page.git
+
+step 2 navigate to file pathway
+
+cd food-festival
+
+3. Install dependencies
+
 npm install
-```
 
-### Compile and Hot-Reload for Development
+4. Run the development server
 
-```sh
 npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
