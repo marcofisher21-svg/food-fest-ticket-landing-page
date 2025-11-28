@@ -11,44 +11,44 @@ const tickets = ref([
   {
     id: 1,
     name: "Standard Pass",
+    description: "Access to general sessions.",
     price: 50,
     featured: false,
     favourited: false,
     img: "https://i.postimg.cc/8zjcXtzM/images-q-tbn-ANd9Gc-Qr-RF4G2ow-M7OG-PZl-V2j-YVWFI9POjs6tsx8A-s.jpg",
-    description: "Access to general sessions throughout the day.",
     benefits: [
-      "Standard seating",
-      "Event newsletter",
-      "Access to main stage"
+      "General seating",
+      "Festival floor access",
+      "Standard support"
     ]
   },
   {
     id: 2,
     name: "Premium Pass",
+    description: "Priority seating + Q&A.",
     price: 89,
     featured: false,
     favourited: false,
     img: "https://i.postimg.cc/0NSQPjST/images-q-tbn-ANd9Gc-Sk-Te-J3YI9IK-q-u8q-Rw-KOCXj-YJ9olkby-Bc-Kw-s.jpg",
-    description: "Priority seating and Q&A with speakers.",
     benefits: [
-      "Extended workshops",
       "Priority seating",
-      "Q&A privileges"
+      "Guest speaker Q&A",
+      "Snack voucher"
     ]
   },
   {
     id: 3,
     name: "VIP Experience",
+    description: "VIP lounge + merch + front-row seating.",
     price: 119,
     featured: true,
     favourited: false,
     img: "https://i.postimg.cc/ZRF5vQVV/images-q-tbn-ANd9Gc-S-i-KJGrl-Qm-AWn-P9Y7VZIe-Sn-TYMVa5MOb-EA-s.jpg",
-    description: "VIP lounge, merchandise, and front-row seating.",
     benefits: [
-      "VIP lounge access",
-      "Meet & greet",
-      "Exclusive merchandise",
-      "Front-row seating"
+      "VIP lounge",
+      "Front-row seating",
+      "Merch bundle",
+      "Exclusive meet-and-greet"
     ]
   }
 ])

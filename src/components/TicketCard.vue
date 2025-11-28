@@ -1,137 +1,141 @@
-<script setup>
-import { ref } from 'vue'
-
-const props = defineProps({
-  ticket: Object
-})
-
-const isOpen = ref(false)
-const emit = defineEmits(['toggleFavourite'])
-
-function toggleFavourite() {
-  emit('toggleFavourite', props.ticket.id)
-}
-
-function bookTicket() {
-  const confirmed = confirm(`Do you want to book: ${props.ticket.name}?`)
-  if (confirmed) alert(`Successfully booked: ${props.ticket.name} 🎉`)
-  else alert('Booking cancelled ❌')
-}
-
-function buyNow() {
-  alert(`Redirecting to checkout for: ${props.ticket.name} 💳`)
-}
-</script>
-
 <template>
   <div class="ticket-card" :class="{ featured: ticket.featured }">
-    <img :src="ticket.img" :alt="ticket.name" class="ticket-image" />
 
-    <h2>{{ ticket.name }}</h2>
-    <p class="price">${{ ticket.price }}</p>
+    <!-- Image -->
+    <div class="img-wrapper">
+      <img :src="ticket.img" :alt="ticket.name" />
+    </div>
 
-    <!-- Short description -->
+    <!-- Title -->
+    <h3 class="name">{{ ticket.name }}</h3>
+
+    <!-- Description -->
     <p class="description">{{ ticket.description }}</p>
 
-    <!-- Dropdown benefits -->
-    <button class="toggle-btn" @click="isOpen = !isOpen">
-      {{ isOpen ? "Hide Benefits ▲" : "Show Benefits ▼" }}
+    <!-- Benefits Dropdown -->
+    <details class="benefits">
+      <summary>Show Benefits</summary>
+      <ul>
+        <li v-for="(b, i) in ticket.benefits" :key="i">{{ b }}</li>
+      </ul>
+    </details>
+
+    <!-- Prices -->
+    <p class="price">
+      <strong>USD:</strong> ${{ ticket.price }}
+    </p>
+
+    <p class="price-zar">
+      <strong>ZAR:</strong> R{{ toRand(ticket.price) }}
+    </p>
+
+    <!-- Favourite Button -->
+    <button
+      @click="$emit('toggleFavourite', ticket.id)"
+      :class="['fav-btn', ticket.favourited ? 'active' : '']"
+    >
+      {{ ticket.favourited ? '❤️ Favourited' : '♡ Favourite' }}
     </button>
 
-    <ul v-if="isOpen" class="benefits-list">
-      <li v-for="(benefit, i) in ticket.benefits" :key="i">• {{ benefit }}</li>
-    </ul>
-
-    <!-- Favourite button -->
-    <button :class="{'fav-btn': true, 'favourited': ticket.favourited}" @click="toggleFavourite">
-      {{ ticket.favourited ? "💔 Remove Favourite" : "❤️ Favourite" }}
+    <!-- Book Button -->
+    <button class="book-btn">
+      📘 Book Now
     </button>
 
-    <!-- Book & Buy Now -->
-    <button class="book-btn" @click="bookTicket">🎟️ Book Ticket</button>
-    <button class="cta-btn" @click="buyNow">💳 Buy Now</button>
   </div>
 </template>
 
+<script setup>
+
+// USD → ZAR conversion (fixed rate)
+function toRand(usd) {
+  return (usd * 18.5).toFixed(2)
+}
+</script>
+
 <style scoped>
 .ticket-card {
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(8px);
-  border-radius: 12px;
-  padding: 20px;
-  color: white;
-  transition: transform 0.2s, box-shadow 0.2s;
-  border: 1px solid rgba(255,255,255,0.18);
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: 0.2s;
+  overflow: hidden;
 }
 
 .ticket-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  transform: translateY(-4px);
 }
 
+/* Featured styling */
 .featured {
   border: 3px solid gold;
-  box-shadow: 0 0 15px gold;
+  background: #fffce5;
 }
 
-.ticket-image {
+.img-wrapper {
   width: 100%;
   height: 180px;
-  object-fit: cover;
+  overflow: hidden;
   border-radius: 12px;
-  margin-bottom: 12px;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.name {
+  font-size: 1.4rem;
+  margin-top: 12px;
+  font-weight: bold;
 }
 
 .description {
-  font-size: 0.95rem;
-  color: #f0f0f0;
-  margin: 8px 0 12px;
+  margin: 8px 0;
+  color: #555;
 }
 
-.toggle-btn {
-  background: none;
-  border: none;
-  color: #ffd700;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px;
+.benefits {
+  margin-bottom: 10px;
 }
 
-.benefits-list {
+.price {
+  font-size: 1.1rem;
   margin-top: 8px;
-  padding-left: 20px;
-  font-size: 0.9rem;
 }
 
-.fav-btn, .book-btn, .cta-btn {
+.price-zar {
+  font-size: 1.1rem;
+  color: green;
+  font-weight: bold;
+}
+
+.fav-btn {
   width: 100%;
   padding: 10px;
   margin-top: 12px;
   border-radius: 10px;
   border: none;
+  background: #ddd;
   cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 
-.fav-btn {
-  background: #ff4d4d;
+.fav-btn.active {
+  background: red;
   color: white;
 }
 
-.fav-btn.favourited {
-  animation: pulse 0.5s;
+.book-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+  border: none;
+  background: #4caf50;
+  color: white;
+  cursor: pointer;
 }
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
-}
-
-.fav-btn:hover { background: #e63535; }
-.book-btn { background: #4CAF50; color: white; }
-.book-btn:hover { background: #3d8b41; }
-.cta-btn { background: #ff8c00; color: white; }
-.cta-btn:hover { background: #e67600; }
 </style>
